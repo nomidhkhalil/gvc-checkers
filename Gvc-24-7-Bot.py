@@ -5,6 +5,7 @@ Runs on GitHub Actions every 5 minutes - No Laptop Needed
 import requests
 import os
 from datetime import datetime
+import pytz
 
 # --- CONFIG - GitHub Secrets se lega ---
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
@@ -45,6 +46,8 @@ def check_gvc_slots():
         return False, f"Error: {e}"
 
 def main():
+    pk_time = datetime.now(pytz.timezone("Asia/Karachi"))
+    time_str = pk_time.strftime('%d/%m/%Y %I:%M:%S %p')
     print(f"BOT_TOKEN exists: {bool(BOT_TOKEN and 'YOUR_' not in BOT_TOKEN)}")
     print(f"CHAT_ID exists: {bool(CHAT_ID and 'YOUR_' not in CHAT_ID)}")
     found, reason = check_gvc_slots()
@@ -52,14 +55,13 @@ def main():
         msg = f"""🇬🇷 <b>GREECE SLOT ALERT!</b> 🇬🇷
 <b>Range:</b> {START_DATE} - {END_DATE}
 <b>Reason:</b> {reason}
-<b>Time:</b> {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+<b>Time:</b> {time_str}
 <b>Link:</b> {GVC_URL}
 Jaldi se login karke book karo!"""
         send_telegram(msg)
     else:
         print(f"No slot: {reason}")
-        # TEST MESSAGE - taake aapko pata chale bot chal raha hai
-        send_telegram(f"✅ Bot Checked at {datetime.now().strftime('%H:%M:%S')} - {reason} - Bot working!")
+        send_telegram(f"✅ Checked at {time_str}\nStatus: {reason}\nBot is working - Next check in 10 mins")
 
 if __name__ == "__main__":
     main()
