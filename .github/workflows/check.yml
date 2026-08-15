@@ -1,4 +1,4 @@
-name: GVC Checker
+name: Check GVC
 on:
   schedule:
     - cron: '*/10 * * * *'
@@ -7,12 +7,18 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-      - run: pip install requests
-      - run: python Gvc-24-7-Bot.py
+          python-version: '3.11'
+      - run: pip install requests pytz
+      - run: python check.py
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          GVC_URL: "https://pk-gr-services.gvcworld.eu/"
+          START_DATE: "01/09/2026"
+          END_DATE: "30/09/2026"
