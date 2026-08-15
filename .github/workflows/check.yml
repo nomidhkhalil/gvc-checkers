@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -11,11 +12,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install requests
+      - run: pip install playwright requests && playwright install chromium
       - run: python check.py
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-          GVC_URL: "https://pk-gr-services.gvcworld.eu/"
-          START_DATE: "01/09/2026"
-          END_DATE: "30/09/2026"
+          GVC_EMAIL: ${{ secrets.GVC_EMAIL }}
+          GVC_PASSWORD: ${{ secrets.GVC_PASSWORD }}
