@@ -14,5 +14,5 @@ jobs:
       - run: pip install requests
       - run: python Gvc-24-7-Bot.py
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          BOT_TOKEN: ${{ 8921405740:AAHxeyr8WqFZNFe_6Wo_PoAC7mCokPBgqcQ }}
           CHAT_ID: ${{ 5893917263 }}
