@@ -1,6 +1,5 @@
-import requests
-import os
 from datetime import datetime
+now = datetime.now().strftime("%H:%M:%S")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -22,11 +21,7 @@ try:
     has_slot = not ("no appointment" in text or "no slot" in text or "keine" in text)
     now = datetime.now().strftime("%H:%M:%S")
 
-    if has_slot:
-        send_telegram(f"🎉 <b>SLOT MIL GAYA!</b>\nTime: {now}\n{GVC_URL}")
-    else:
-        send_telegram(f"⏳ No Slot - Checked at {now}")
-
-except Exception as e:
-    print(f"Error: {e}")
-    send_telegram(f"Error aaya: {e}")
+    if slots:
+    send_telegram(f"🔥 SLOT AVAILABLE at {now}! Jaldi book karo!")
+else:
+    send_telegram(f"✅ Bot Working - Checked at {now} - No slot yet")
