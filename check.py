@@ -6,10 +6,19 @@ CHAT_ID = os.getenv("CHAT_ID")
 GVC_URL = "https://pk-gr-services.gvcworld.eu/"
 
 def send_telegram(message):
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    data = {"chat_id": CHAT_ID, "text": message, "parse_mode": "HTML"}
-    r = requests.post(url, data=data)
-    print(f"Telegram sent: {r.status_code}")
+    import os
+    token = os.getenv("DISCORD_TOKEN")
+    channel_id = os.getenv("DISCORD_CHANNEL_ID")
+    if not token or not channel_id:
+        print("Discord secrets missing!")
+        return
+    
+    url = f"https://discord.com/api/v10/channels/{channel_id}/messages"
+    headers = {"Authorization": f"Bot {token}", "Content-Type": "application/json"}
+    data = {"content": message}
+    
+    r = requests.post(url, headers=headers, json=data)
+    print(f"Discord status: {r.status_code}")
     return r
 
 try:
