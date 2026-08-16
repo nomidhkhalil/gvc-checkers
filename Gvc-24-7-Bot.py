@@ -1,44 +1,31 @@
-import requests
-import os
-from datetime import datetime
+import requests, os
 
-def send_both(message):
-    # Telegram
-    try:
-        bot_token = os.getenv("BOT_TOKEN")
-        chat_id = os.getenv("CHAT_ID")
-        print(f"BOT_TOKEN exists: {bool(bot_token)}")
-        print(f"CHAT_ID exists: {bool(chat_id)}")
-        if bot_token and chat_id:
-            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-            r = requests.get(url, params={"chat_id": chat_id, "text": message}, timeout=10)
-            print(f"Telegram sent: {r.status_code} - {r.text[:200]}")
-    except Exception as e:
-        print(f"Telegram Error: {e}")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+EVENT = os.getenv("EVENT_NAME") # auto ya manual pata chalega
 
-    # Discord Webhook
-    try:
-        webhook = os.getenv("DISCORD_WEBHOOK_URL")
-        print(f"DISCORD_WEBHOOK exists: {bool(webhook)}")
-        if webhook:
-            webhook = webhook.strip()
-            r = requests.post(webhook, json={"content": message}, timeout=10)
-            print(f"Discord sent: {r.status_code} - {r.text[:500]}")
-    except Exception as e:
-        print(f"Discord Error: {e}")
+def send(msg):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.get(url, params={"chat_id": CHAT_ID, "text": msg}, timeout=15)
 
-# --- MAIN ---
-print(f"[{datetime.now()}] Checking GVC: https://pk-gr-services.gvcworld.eu/")
-send_both("✅ TEST SUCCESS: GitHub Bot Working! - Manual Run by Numan Baya")
+print(f"Event: {EVENT} - Checking...")
 
-# Yahan apka asal GVC check wala code ayega
-# Agar slot hoga to ye neeche wala bhi chalega
 try:
-    # Example check - aapka purana logic yahan lagao
-    # response = requests.get("https://pk-gr-services.gvcworld.eu/...")
-    # if "slot" in response.text:
-    #     send_both("🔥 SLOT MIL GAYA!")
-    # else:
-    print("No slot: No slot - but test message sent above")
+    r = requests.get("https://pk-gr-services.gvcworld.eu/", headers={"User-Agent": "Mozilla/5.0"}, timeout=20)
+    text = r.text.lower()
+    
+    has_no_slot = "no slot" in text or "kein termin" in text or "keine termine" in text
+    
+    if not has_no_slot:
+        send("🔥🔥🔥 GVC SLOT MIL GAYA BAYA! Jaldi kholo! https://pk-gr-services.gvcworld.eu/")
+        print("SLOT FOUND - Message sent!")
+    else:
+        print("No slot")
+        # Agar manual hai to bata do ke no slot hai
+        if EVENT == "workflow_dispatch":
+            send("✅ Manual check: Abhi koi slot nahi hai. Auto bot check karta rahega.")
+
 except Exception as e:
-    print(f"Check Error: {e}")
+    print(f"Error {e}")
+    if EVENT == "workflow_dispatch":
+        send(f"Manual check failed: {e}")
