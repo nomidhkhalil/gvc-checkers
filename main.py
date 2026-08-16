@@ -3,30 +3,34 @@ import os
 from datetime import datetime
 
 def send_both(message):
-    # 1. Discord
+    # 1. Telegram
+    try:
+        bot_token = os.getenv("BOT_TOKEN")
+        chat_id = os.getenv("CHAT_ID")
+        print(f"BOT_TOKEN exists: {bool(bot_token)}")
+        print(f"CHAT_ID exists: {bool(chat_id)}")
+        if bot_token and chat_id:
+            r = requests.get(f"https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message}")
+            print(f"Telegram sent: {r.status_code}")
+    except Exception as e:
+        print(f"Telegram Error: {e}")
+
+    # 2. Discord - Naya Log Add Kiya
     try:
         token = os.getenv("DISCORD_TOKEN")
         ch_id = os.getenv("DISCORD_CHANNEL_ID")
+        print(f"DISCORD_TOKEN exists: {bool(token)}")
+        print(f"DISCORD_CHANNEL_ID exists: {bool(ch_id)}")
+        
         if token and ch_id:
+            headers = {"Authorization": f"Bot {token}"}
+            data = {"content": message}
             url = f"https://discord.com/api/v10/channels/{ch_id}/messages"
-            headers = {"Authorization": f"Bot {token}", "Content-Type": "application/json"}
-            requests.post(url, headers=headers, json={"content": message})
+            r = requests.post(url, headers=headers, json=data)
+            print(f"Discord sent: {r.status_code} - {r.text[:200]}")
+        else:
+            print("Discord skipped - Token or Channel ID missing")
     except Exception as e:
-        print(f"Discord Error {e}")
+        print(f"Discord Error: {e}")
 
-    # 2. Telegram
-    try:
-        BOT_TOKEN = os.getenv("BOT_TOKEN")
-        CHAT_ID = os.getenv("CHAT_ID")
-        if t_token and chat_id:
-            url = f"https://api.telegram.org/bot{t_token}/sendMessage"
-            requests.post(url, json={"chat_id": chat_id, "text": message})
-    except Exception as e:
-        print(f"Telegram Error {e}")
-
-def main():
-    now = datetime.now().strftime("%d-%m-%Y %I:%M:%S %p")
-    msg = f"✅ GVC Bot Active - {now}\nHar 5 min check ho raha hai - Discord + Telegram OK!"
-    send_both(msg)
-
-main()
+# ... baaki aapka check wala code
