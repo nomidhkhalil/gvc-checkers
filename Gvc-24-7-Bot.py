@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 
 def send_both(message):
-    # 1. Telegram
     try:
         bot_token = os.getenv("BOT_TOKEN")
         chat_id = os.getenv("CHAT_ID")
@@ -15,7 +14,6 @@ def send_both(message):
     except Exception as e:
         print(f"Telegram Error: {e}")
 
-    # 2. Discord
     try:
         token = os.getenv("DISCORD_TOKEN")
         ch_id = os.getenv("DISCORD_CHANNEL_ID")
@@ -26,13 +24,12 @@ def send_both(message):
             data = {"content": message}
             url = f"https://discord.com/api/v10/channels/{ch_id.strip()}/messages"
             r = requests.post(url, headers=headers, json=data)
-            print(f"Discord sent: {r.status_code} - {r.text[:300]}")
+            print(f"Discord sent: {r.status_code} - {r.text[:500]}")
         else:
             print("Discord skipped - Token or Channel ID missing")
     except Exception as e:
         print(f"Discord Error: {e}")
 
-# --- GVC Check ---
 url_to_check = "https://pk-gr-services.gvcworld.eu/"
 print(f"[{datetime.now()}] Checking GVC: {url_to_check}")
 
@@ -43,7 +40,7 @@ try:
         send_both("❌ GVC: No slot available")
     else:
         print("Slot FOUND!")
-        send_both("✅ GVC SLOT FOUND! Jaldi check karo: " + url_to_check)
+        send_both("✅ GVC SLOT FOUND! " + url_to_check)
 except Exception as e:
     print(f"Check error: {e}")
     send_both(f"Error checking GVC: {e}")
