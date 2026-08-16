@@ -33,6 +33,5 @@ try:
     if "No slot" in page.text or "no slot" in page.text.lower():
         send_both("❌ GVC: No slot available")
     else:
-        send_both("✅ GVC SLOT FOUND! " + url_to_check)
-except Exception as e:
-    send_both(f"Error: {e}")
+    print("No slot: No slot")
+    send_both("✅ TEST: Bot is working! Telegram + Discord connected - Numan Baya")
