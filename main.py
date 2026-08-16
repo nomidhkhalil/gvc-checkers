@@ -16,8 +16,8 @@ def send_both(message):
 
     # 2. Telegram
     try:
-        t_token = os.getenv("TELEGRAM_TOKEN")
-        chat_id = os.getenv("CHAT_ID")
+        BOT_TOKEN = os.getenv("BOT_TOKEN")
+        CHAT_ID = os.getenv("CHAT_ID")
         if t_token and chat_id:
             url = f"https://api.telegram.org/bot{t_token}/sendMessage"
             requests.post(url, json={"chat_id": chat_id, "text": message})
