@@ -32,11 +32,10 @@ def send_both(message):
     except Exception as e:
         print(f"Discord Error: {e}")
 
-# --- Aapka GVC Check Code ---
+# --- GVC Check ---
 url_to_check = "https://pk-gr-services.gvcworld.eu/"
 print(f"[{datetime.now()}] Checking GVC: {url_to_check}")
 
-# Yahan aapka asal check logic hoga, filhal test ke liye:
 try:
     page = requests.get(url_to_check, timeout=10)
     if "No slot" in page.text or "no slot" in page.text.lower():
