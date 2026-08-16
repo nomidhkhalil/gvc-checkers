@@ -1,8 +1,6 @@
 from datetime import datetime
 now = datetime.now().strftime("%H:%M:%S")
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
 GVC_URL = "https://pk-gr-services.gvcworld.eu/"
 
 def send_telegram(message):
