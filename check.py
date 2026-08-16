@@ -8,30 +8,25 @@ GVC_URL = "https://pk-gr-services.gvcworld.eu/"
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    data = {"chat_id": CHAT_ID, "text": message}
+    data = {"chat_id": CHAT_ID, "text": message, "parse_mode": "HTML"}
     r = requests.post(url, data=data)
     print(f"Telegram sent: {r.status_code}")
     return r
 
-def check_gvc():
-    print(f"[{datetime.now()}] Checking GVC: {GVC_URL}")
-    try:
-        headers = {"User-Agent": "Mozilla/5.0"}
-        response = requests.get(GVC_URL, headers=headers, timeout=20)
-        text = response.text.lower()
+try:
+    print(f"[{datetime.now()}] Checking GVC...")
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(GVC_URL, headers=headers, timeout=20)
+    text = response.text.lower()
+    
+    has_slot = not ("no appointment" in text or "no slot" in text or "keine" in text)
+    now = datetime.now().strftime("%H:%M:%S")
 
-        if "no appointment" in text or "no slot" in text or "keine termine" in text or "currently no" in text or "no appointments available" in text:
-            return False
-        else:
-            return True
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
+    if has_slot:
+        send_telegram(f"🎉 <b>SLOT MIL GAYA!</b>\nTime: {now}\n{GVC_URL}")
+    else:
+        send_telegram(f"⏳ No Slot - Checked at {now}")
 
-has_slot = check_gvc()
-now = datetime.now().strftime("%H:%M:%S - %d/%m/%Y")
-
-if has_slot:
-    send_telegram(f"🎉 SLOT MIL GAYA! 🎉\n\nLink: {GVC_URL}\nTime: {now}\n\nJaldi book karo!")
-else:
-    send_telegram(f"⏳ Check kiya: No Slot\nTime: {now}\nLink: {GVC_URL}\n\n5 min baad phir check karunga...")
+except Exception as e:
+    print(f"Error: {e}")
+    send_telegram(f"Error aaya: {e}")
