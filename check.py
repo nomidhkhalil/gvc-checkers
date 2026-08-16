@@ -18,10 +18,10 @@ try:
     response = requests.get(GVC_URL, headers=headers, timeout=20)
     text = response.text.lower()
     
-    has_slot = not ("no appointment" in text or "no slot" in text or "keine" in text)
-    now = datetime.now().strftime("%H:%M:%S")
+            has_slot = not ("no appointment" in text or "no slot" in text or "keine" in text)
+        now = datetime.now().strftime("%H:%M:%S")
 
-    if slots:
-    send_telegram(f"🔥 SLOT AVAILABLE at {now}! Jaldi book karo!")
-else:
-    send_telegram(f"✅ Bot Working - Checked at {now} - No slot yet")
+        if has_slot:
+            send_telegram(f"🔥 SLOT AVAILABLE at {now}! Jaldi book karo!")
+        else:
+            send_telegram(f"✅ Bot Working - Checked at {now} - No slot yet")
