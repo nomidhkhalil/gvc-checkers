@@ -25,7 +25,7 @@ try:
     else:
         print("No slot: No slot")
         # Manual hoga to bata dega, Auto hoga to chup rahega
-        if "workflow_dispatch" in EVENT:
+        if True:
             send(f"✅ Manual check [{datetime.now().strftime('%H:%M:%S')}]: Abhi No Slot hai. Auto har 5 min check kar raha hai.")
         else:
             print("Auto run - No message sent (only sends when slot found)")
