@@ -25,10 +25,10 @@ try:
     else:
         print("No slot: No slot")
         # Manual hoga to bata dega, Auto hoga to chup rahega
-        if True:
-            send(f"✅ Manual check [{datetime.now().strftime('%H:%M:%S')}]: Abhi No Slot hai. Auto har 5 min check kar raha hai.")
+        if slots_found:
+             send_telegram(f"🎉 SLOT MIL GAYA! {slots}")
         else:
-            print("Auto run - No message sent (only sends when slot found)")
+             send_telegram(f"❌ No Slot hai - Next check 5 min me - {time}")
 
 except Exception as e:
     print(f"Error: {e}")
