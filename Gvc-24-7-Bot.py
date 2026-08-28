@@ -8,7 +8,7 @@ EVENT = os.getenv("EVENT_NAME", "")
 def send(msg):
     try:
         BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+        CHAT_ID = os.getenv("CHAT_ID")
     except Exception as e:
         print(f"Telegram error: {e}")
 
