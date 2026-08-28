@@ -26,9 +26,9 @@ try:
         print("No slot: No slot")
         # Manual hoga to bata dega, Auto hoga to chup rahega
         if slots_found:
-             send_telegram(f"🎉 SLOT MIL GAYA! {slots}")
-        else:
-             send_telegram(f"❌ No Slot hai - Next check 5 min me - {time}")
+    send_telegram(...)
+else:
+    send_telegram(...)
 
 except Exception as e:
     print(f"Error: {e}")
