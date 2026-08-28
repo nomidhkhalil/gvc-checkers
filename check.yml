@@ -21,10 +21,6 @@ jobs:
         run: |
           pip install requests
           python Gvc-24-7-Bot.py
-      - name: Test Telegram (Is se pata chalega token theek hai ya nahi)
-        if: always()
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
+      
         run: |
           curl -s "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=✅ Auto Workflow Chal Gaya - Bot OK Hai"
