@@ -4,7 +4,16 @@ name: GVC 24-7 Bot
 on:
   schedule:
     - cron: '*/5 * * * *'
-  workflow_dispatch:
+  if __name__ == "__main__":
+
+    print("=" * 70)
+    print("🚀 GVC CHECKER STARTED")
+    print("=" * 70)
+
+    if EVENT_NAME == "workflow_dispatch":
+        telegram_test()
+
+    result = check_gvc()
 
 jobs:
   check:
